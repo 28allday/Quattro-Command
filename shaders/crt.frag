@@ -14,7 +14,10 @@
 //   3. Scanlines, tied to the field's own height rather than the window's, so
 //      they do not moire when the cabinet is resized.
 //   4. Chromatic aberration that grows toward the edges, because a real tube's
-//      convergence is worst in the corners.
+//      convergence is worst in the corners. Very slight: at anything more than
+//      a few thousandths it stops reading as convergence error and starts
+//      reading as a rendering fault, which is exactly how it looked on the HUD
+//      at 0.020.
 //   5. A vignette, plus a hint of noise, so the black is never flat.
 //
 // Everything scales off `amount`, so the QML side can fade the whole effect in
@@ -64,7 +67,7 @@ void main()
     // ---- convergence error, worst at the corners
     vec2 fromCentre = uv - 0.5;
     float edge = dot(fromCentre, fromCentre);
-    vec2 shift = fromCentre * edge * 0.020 * amount;
+    vec2 shift = fromCentre * edge * 0.007 * amount;
 
     vec3 colour;
     colour.r = texture(src, uv + shift).r;
@@ -85,8 +88,8 @@ void main()
     colour *= mix(1.0, 0.88 + 0.12 * scan, amount);
 
     // ---- vignette
-    float vig = 1.0 - edge * 1.35;
-    colour *= mix(1.0, clamp(vig, 0.0, 1.0), amount * 0.85);
+    float vig = 1.0 - edge * 0.95;
+    colour *= mix(1.0, clamp(vig, 0.0, 1.0), amount * 0.75);
 
     // ---- grain, so the darks are never a flat block of one value
     float n = hash(uv * resolution + time) - 0.5;

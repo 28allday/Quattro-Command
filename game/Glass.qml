@@ -39,7 +39,7 @@ Item {
     // ---- tube
     property real crtAmount: 1.0
     property real crtCurvature: 0.055
-    property real crtBrightness: 1.14
+    property real crtBrightness: 1.30
     property real scanCount: 231        // one line per field unit
     // Driven by the game clock rather than a timer of its own, so the grain
     // stops when the game is paused instead of hissing away behind a still
