@@ -56,6 +56,8 @@ falling on city six is not Delta's problem to solve.
 
 Chain your explosions. A fireball stays at full size for half a second, which is
 long enough to catch the next warhead through it — that is where the scores are.
+Fireballs carry no outline, so overlapping ones merge into a single wall of
+fire, and a well-placed chain closes off a whole corner of the sky.
 
 ## Scoring
 
@@ -89,6 +91,7 @@ while you play, so you can decide whether a round is worth spending.
 |---|---|
 | ![Title](screenshots/01-title.jpg) | ![Wave eight](screenshots/03-wave-eight.jpg) |
 | ![Tally](screenshots/04-tally.jpg) | ![High score](screenshots/06-high-score.jpg) |
+| ![Chain reaction](screenshots/08-chain.jpg) | ![The end](screenshots/05-game-over.jpg) |
 
 ## Where things are kept
 

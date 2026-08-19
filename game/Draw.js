@@ -131,32 +131,47 @@ function glow(ctx, x, y, radius, colour, alpha) {
 
 // The fireball: white-hot centre, theme colour body, nothing at the rim.
 //
-// Three stops rather than two because a two-stop gradient from the accent to
-// transparent reads as a coloured smudge; the hot core is what makes it read
-// as something releasing energy.
-function fireball(ctx, x, y, radius, core, body, alpha) {
-    if (radius <= 0) return
+// Deliberately has NO outline. The arcade original drew a flat filled circle,
+// which meant two fireballs that touched merged into one continuous mass --
+// and that merging is most of what a chain reaction looks like. Any stroke
+// round the edge destroys it: two outlined discs that overlap read as two
+// discs, however well they are drawn.
+//
+// So the body is carried almost to full alpha before it falls away, because
+// two overlapping regions of the same colour at the same alpha composite into
+// one flat region with no seam, while two at 60% show their overlap as a
+// bright lens. The soft last fifteen percent is what keeps it from being a
+// hard-edged disc.
+function fireballFill(ctx, x, y, radius, core, body, alpha) {
     var g = ctx.createRadialGradient(x, y, 0, x, y, radius)
     // The core is a highlight, not a filling. Giving it a third of the radius
     // -- which the first version did -- means the body colour never gets a
     // chance to show before the bloom pass turns the whole disc white.
     g.addColorStop(0.00, World.rgba(core, alpha))
-    g.addColorStop(0.16, World.rgba(body, alpha * 0.95))
-    g.addColorStop(0.62, World.rgba(body, alpha * 0.55))
+    g.addColorStop(0.16, World.rgba(body, alpha))
+    g.addColorStop(0.84, World.rgba(body, alpha))
     g.addColorStop(1.00, World.rgba(body, 0))
     ctx.fillStyle = g
-    ctx.beginPath()
-    ctx.arc(x, y, radius, 0, Math.PI * 2)
     ctx.fill()
 }
 
-// A circle with a rim that boils.
+// A fireball whose edge boils.
 //
-// The original's explosions were perfect circles, which is what the arcade
-// hardware could draw and not what an explosion looks like. Sixteen vertices
-// with a time-varying radius is enough to break the outline without it
-// reading as a polygon -- and because the wobble is a function of the clock
-// rather than of random(), it moves smoothly instead of hissing.
+// The silhouette is the plasma path rather than a circle -- the arcade drew
+// perfect circles because that is what the hardware could do, and an explosion
+// is not a circle -- but it is a FILL, not a stroke, so there is still no line
+// anywhere and two of them that touch still merge.
+function fireball(ctx, x, y, radius, core, body, alpha, clock, seed) {
+    if (radius <= 0) return
+    plasmaPath(ctx, x, y, radius, clock, 0.07, seed)
+    fireballFill(ctx, x, y, radius, core, body, alpha)
+}
+
+// A closed path whose radius boils. Used as the fireball's fill shape.
+//
+// Sixteen vertices with a time-varying radius is enough to break a circle
+// without it reading as a polygon -- and because the wobble is a function of
+// the clock rather than of random(), it moves smoothly instead of hissing.
 function plasmaPath(ctx, x, y, radius, clock, amount, seed) {
     var n = 16
     ctx.beginPath()
@@ -170,20 +185,6 @@ function plasmaPath(ctx, x, y, radius, clock, amount, seed) {
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py)
     }
     ctx.closePath()
-}
-
-// A thin expanding ring -- the shockwave that outruns the fireball.
-function ring(ctx, x, y, radius, colour, lw, alpha, weight) {
-    if (radius <= 0) return
-    var w = weight === undefined ? 1 : weight
-    ctx.beginPath()
-    ctx.arc(x, y, radius, 0, Math.PI * 2)
-    ctx.strokeStyle = World.rgba(colour, alpha * 0.25)
-    ctx.lineWidth = lw * w * 4
-    ctx.stroke()
-    ctx.strokeStyle = World.rgba(colour, alpha)
-    ctx.lineWidth = lw * w
-    ctx.stroke()
 }
 
 // A filled dot with a halo. Warhead heads, nav lights, lit windows.

@@ -8,23 +8,20 @@
 // once. That held half-second is what makes chaining possible -- you are
 // aiming at where a warhead will be, not where it is -- so none of it moved.
 //
-// The drawing is entirely new. The original filled a circle, flashed it
-// between two theme colours and stroked a ring round it. This one is five
-// layers: a shockwave that outruns the fireball and keeps going after it, a
-// halo, a radial fireball with a white-hot core, a boiling rim, and light
-// thrown onto the ground underneath.
+// The drawing is new, but it keeps the original's one non-negotiable property:
+// there is NO OUTLINE anywhere on a fireball, so two that touch merge into a
+// single mass rather than reading as two overlapping discs. Chain reactions are
+// the whole game and that merging is what they look like.
+//
+// Four layers, all of them fills: a halo, the fireball itself (a boiling blob,
+// not a circle, but filled rather than stroked), three lobes turning inside it,
+// and light thrown onto the ground underneath.
 
 var EXPAND_TIME = 0.3
 var HOLD_TIME = 0.5
 var CONTRACT_TIME = 0.3
 var MAX_RADIUS = 12
 var MAX_ACTIVE = 8
-
-// The shockwave is not the fireball. It leaves at the moment of detonation,
-// travels well past the kill radius and fades -- so a detonation reads as
-// something that happened *to* the air around it.
-var SHOCK_TIME = 0.55
-var SHOCK_REACH = 2.6
 
 var active = []
 
@@ -40,7 +37,6 @@ function add(x, y) {
         phase: "expanding",
         timer: 0,
         age: 0,
-        shock: 0,
         // A per-explosion phase offset, so two fireballs side by side boil out
         // of step with each other instead of pulsing as one.
         seed: Math.random() * Math.PI * 2
@@ -54,7 +50,6 @@ function update(dt) {
         var e = active[i]
         e.timer += dt
         e.age += dt
-        e.shock = Math.min(1, e.age / SHOCK_TIME)
 
         if (e.phase === "expanding") {
             e.radius = e.maxRadius * (e.timer / EXPAND_TIME)
@@ -127,14 +122,6 @@ function lightAt(x) {
 function draw(ctx, pal, lw, clock) {
     for (var i = 0; i < active.length; i++) {
         var e = active[i]
-
-        // ---- shockwave, drawn even after the fireball has shrunk away
-        if (e.shock < 1) {
-            var sr = e.maxRadius * SHOCK_REACH * e.shock
-            var sa = (1 - e.shock) * (1 - e.shock) * 0.5
-            Draw.ring(ctx, e.x, e.y, sr, pal.core, lw, sa, 1.2)
-        }
-
         if (e.radius <= 0.4) continue
 
         // The original flashed between two theme colours at 40 rad/s. That
@@ -149,7 +136,12 @@ function draw(ctx, pal, lw, clock) {
         Draw.glow(ctx, e.x, e.y, e.radius * 2.3, pal.glow, 0.13)
 
         // ---- fireball
-        Draw.fireball(ctx, e.x, e.y, e.radius, pal.core, body, 0.72)
+        //
+        // Near-opaque on purpose. Two overlapping regions of the same colour
+        // at the same alpha composite into one flat region with no seam; at
+        // 70% they show their overlap as a bright lens, which is exactly the
+        // "two discs" reading the outline was removed to avoid.
+        Draw.fireball(ctx, e.x, e.y, e.radius, pal.core, body, 0.97, clock, e.seed)
 
         // ---- three lobes turning inside it
         //
@@ -164,21 +156,7 @@ function draw(ctx, pal, lw, clock) {
             Draw.glow(ctx,
                       e.x + Math.cos(ang) * orbit,
                       e.y + Math.sin(ang) * orbit,
-                      e.radius * 0.52, pal.core, 0.28)
-        }
-
-        // ---- boiling rim
-        Draw.plasmaPath(ctx, e.x, e.y, e.radius * 0.98, clock, 0.07, e.seed)
-        ctx.strokeStyle = World.rgba(pal.core, 0.9)
-        ctx.lineWidth = lw * 2.0
-        ctx.stroke()
-
-        // ---- a second, tighter rim inside it while the fireball is young
-        if (e.phase === "expanding") {
-            Draw.plasmaPath(ctx, e.x, e.y, e.radius * 0.55, clock * 1.6, 0.13, e.seed + 2)
-            ctx.strokeStyle = World.rgba(pal.core, 0.35)
-            ctx.lineWidth = lw
-            ctx.stroke()
+                      e.radius * 0.52, pal.core, 0.22)
         }
 
         // ---- light on the ground below
