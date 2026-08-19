@@ -7,8 +7,10 @@ import QtQuick
 // then the prompt. All three at once lands on top of your own explosion and
 // reads as the game closing the window on you.
 //
-// "THE END" rather than "GAME OVER", which is what the original said, and is a
-// better line: the cities are gone and there is nobody left to play for.
+// The line is "ALL CITIES LOST", which is simply what has happened. The LÖVE
+// original said "THE END" -- which is the arcade's own game-over screen text,
+// carried across without anyone noticing it was a quotation rather than a
+// phrase. This says the same thing in its own words.
 Item {
     id: root
 
@@ -43,7 +45,7 @@ Item {
         y: parent.height * 0.34
         horizontalAlignment: Text.AlignHCenter
         visible: root.game.gameOverTimer > 0.5
-        text: "THE END"
+        text: "ALL CITIES LOST"
         color: root.game.pal.bright
         font.family: root.game.fontFamily
         font.pixelSize: root.game.fontLarge

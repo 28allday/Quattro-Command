@@ -41,18 +41,18 @@ sudo pacman -S qt6-multimedia
 |-------|--------|
 | **Mouse** | Aim |
 | **Left click** | Fire from the best-placed launcher |
-| **Right click** | Fire from Delta specifically |
-| **A** / **1** | Fire from Alpha (left) |
-| **S** / **2** | Fire from Delta (centre, three times faster) |
-| **D** / **3** | Fire from Omega (right) |
+| **Right click** | Fire from Kilo specifically |
+| **A** / **1** | Fire from Bravo (left) |
+| **S** / **2** | Fire from Kilo (centre, three times faster) |
+| **D** / **3** | Fire from Sierra (right) |
 | **Enter** | Start, and dismiss the end screens |
 | **F1** | Curved-screen effect on or off |
 | **M** | Mute |
 | **Escape** | Close the cabinet |
 
-Delta is the fast one and it is the one you will want when something is already
-low. Alpha and Omega are slower but they are closer to the edges, and a warhead
-falling on city six is not Delta's problem to solve.
+Kilo is the fast one and it is the one you will want when something is already
+low. Bravo and Sierra are slower but they are closer to the edges, and a warhead
+falling on city six is not Kilo's problem to solve.
 
 Chain your explosions. A fireball stays at full size for half a second, which is
 long enough to catch the next warhead through it — that is where the scores are.
@@ -91,7 +91,7 @@ while you play, so you can decide whether a round is worth spending.
 |---|---|
 | ![Title](screenshots/01-title.jpg) | ![Wave eight](screenshots/03-wave-eight.jpg) |
 | ![Tally](screenshots/04-tally.jpg) | ![High score](screenshots/06-high-score.jpg) |
-| ![Chain reaction](screenshots/08-chain.jpg) | ![The end](screenshots/05-game-over.jpg) |
+| ![Chain reaction](screenshots/08-chain.jpg) | ![Game over](screenshots/05-game-over.jpg) |
 
 ## Where things are kept
 
@@ -105,9 +105,15 @@ High scores, the mute setting and the screen setting live in
 
 ## Originality
 
-Nothing here is derived from any commercial game. The city outlines were drawn
-by hand, the sky is generated at runtime, the ten sounds are synthesised by the
-script in `audio/`, and the shaders were written for this. There is no
+This is a missile-defence game, and it is not the first one. What it owes to the
+genre are its rules — defend cities, three launchers, warheads that split,
+explosions that chain — and rules are not anyone's property.
+
+Everything you can see or hear is this project's own. The city outlines and the
+launcher were drawn by hand in the game's own coordinate space, the sky and the
+starfield are generated at runtime, the ten sounds are synthesised by
+`audio/make_sounds.py`, and the three shaders were written for this. No code,
+art, audio or text has been taken from any commercial game, and there is no
 affiliation with, or endorsement by, any game publisher.
 
 ## License

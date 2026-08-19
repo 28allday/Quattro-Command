@@ -863,7 +863,7 @@ Item {
                 if (game.phase !== "playing") return
                 var p = toField(e.x, e.y)
                 Crosshair.setPosition(p.x, p.y)
-                // Right-click fires the centre launcher specifically -- Delta
+                // Right-click fires the centre launcher specifically -- Kilo
                 // is three times faster than the flanks and worth being able
                 // to spend deliberately rather than only when it is nearest.
                 if (e.button === Qt.RightButton) game.fireFrom(1)

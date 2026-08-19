@@ -1,7 +1,7 @@
 .import "World.js" as World
 .import "Draw.js" as Draw
 
-// Alpha, Delta and Omega -- three launchers on the floor below the horizon.
+// Bravo, Kilo and Sierra -- three launchers on the floor below the horizon.
 //
 // The trucks are the original's drawing, transcribed: flatbed, cab leaning
 // toward the middle of the screen, four wheels, a turret offset away from the
@@ -14,10 +14,15 @@
 // the battery is live, the last two rounds turn the alarm colour, and a
 // destroyed battery burns instead of simply being redrawn as scrap.
 
+// Callsigns, not the arcade's. The LÖVE original carried Atari's own three
+// base names across verbatim and in the same order, which is a far more
+// identifiable thing to have copied than any rule -- rules are not
+// copyrightable and a specific set of three proper nouns is evidence. These
+// keep the military texture and share nothing.
 var DEFS = [
-    { name: "ALPHA", x: 18,  speed: 180, tilt:  0.35, dir:  1 },
-    { name: "DELTA", x: 128, speed: 420, tilt:  0.00, dir:  1 },
-    { name: "OMEGA", x: 238, speed: 180, tilt: -0.35, dir: -1 }
+    { name: "BRAVO",  x: 18,  speed: 180, tilt:  0.35, dir:  1 },
+    { name: "KILO",   x: 128, speed: 420, tilt:  0.00, dir:  1 },
+    { name: "SIERRA", x: 238, speed: 180, tilt: -0.35, dir: -1 }
 ]
 
 var AMMO_PER_WAVE = 10
@@ -77,11 +82,11 @@ function fire(index) {
     return true
 }
 
-// Delta first if it has anything left -- it is the fast one and the reason to
+// Kilo first if it has anything left -- it is the fast one and the reason to
 // aim with the mouse at all. Otherwise whichever flank is nearer the click.
 function findNearest(gx) {
-    var delta = batteries[1]
-    if (delta && delta.alive && delta.ammo > 0) return delta
+    var centre = batteries[1]
+    if (centre && centre.alive && centre.ammo > 0) return centre
 
     var best = null, bestDist = Infinity
     var flanks = [0, 2]
