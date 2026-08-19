@@ -1,0 +1,8 @@
+# Dev harness leftovers
+*.qmlc
+*.jsc
+__pycache__/
+
+# Local only — never pushed
+NOTES.local.md
+dev/

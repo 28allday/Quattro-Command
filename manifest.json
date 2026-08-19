@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "nosignal.quattro-command",
+  "name": "Quattro Command",
+  "version": "0.1.0",
+  "author": "Gavin Nugent",
+  "license": "MIT",
+  "description": "A vector missile-defence cabinet for omarchy-shell. Six cities, three launchers, warheads that split and bombs that dodge — drawn as glowing vectors on a curved phosphor screen in your live theme colours. Summon with: omarchy-shell shell toggle nosignal.quattro-command",
+  "kinds": [
+    "panel",
+    "bar-widget"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "panel": "Panel.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Quattro Command",
+    "description": "Bar icon that toggles the Quattro Command cabinet",
+    "category": "Fun",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "aliases": [
+      "quattro-command",
+      "missile",
+      "arcade",
+      "game",
+      "defence"
+    ]
+  }
+}
