@@ -46,7 +46,6 @@ function removeMarker(mx, my) {
 }
 
 function clear() { markers = [] }
-function count() { return markers.length }
 
 function draw(ctx, pal, lw, clock, ready) {
     // ---- target markers

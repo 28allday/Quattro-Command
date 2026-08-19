@@ -302,7 +302,12 @@ function drawAlive(ctx, c, pal, lw, clock) {
                 : (Math.sin(clock * w.rate + w.phase) > -0.1 ? w.bright : 0.06)
         if (lit < 0.1) continue
         var wx = c.x + w.x, wy = c.y + w.y
-        Draw.glow(ctx, wx, wy, 1.6, pal.bright, lit * 0.22)
+        // Just the lit rectangle. Each window used to get its own radial
+        // gradient for a halo, which across six cities is about 170 gradient
+        // objects allocated per frame -- 10,000 a second -- and it was the
+        // single largest cost in the renderer. It was also redundant: the
+        // windows are the brightest thing on the building, so the bloom pass
+        // in Glass.qml already blooms them. That is what the bloom pass is for.
         ctx.fillStyle = World.rgba(pal.bright, lit * 0.75)
         ctx.fillRect(wx - w.w / 2, wy - w.h / 2, w.w, w.h)
     }

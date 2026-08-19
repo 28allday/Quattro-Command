@@ -92,29 +92,9 @@ function anyActive() {
     return active.length > 0
 }
 
-function count() {
-    return active.length
-}
 
 function clear() {
     active = []
-}
-
-// How much light the fireballs are throwing onto a point on the ground. Used
-// by the field renderer to flare the horizon under a detonation, and by the
-// cabinet to decide how hard to shake.
-function lightAt(x) {
-    var total = 0
-    for (var i = 0; i < active.length; i++) {
-        var e = active[i]
-        if (e.radius <= 0) continue
-        var d = Math.abs(e.x - x)
-        var reach = 40
-        if (d > reach) continue
-        var vertical = World.clamp(1 - (World.GROUND_Y - e.y) / 90, 0, 1)
-        total += (1 - d / reach) * vertical * (e.radius / MAX_RADIUS)
-    }
-    return Math.min(1.5, total)
 }
 
 // ----------------------------------------------------------------- drawing

@@ -37,7 +37,6 @@ function makeMissile(def) {
         dirX: dx / dist, dirY: dy / dist,
         totalDist: dist,
         age: 0,
-        emberTimer: 0,
         isMirv: def.isMirv || false,
         mirvSplit: false,
         mirvSplitFrac: def.mirvSplitFrac || 0,
@@ -200,19 +199,9 @@ function allDone() {
     return active.length === 0 && queue.length === 0
 }
 
-function count() { return active.length }
 function queued() { return queue.length }
 function getAll() { return active }
 function clear() { active = []; queue = []; spawnTimer = 0 }
-
-// Which warheads still have somewhere to be. Used by the crosshair's threat
-// readout and by the cabinet to decide how tense the sky is.
-function closestApproach() {
-    var worst = Infinity
-    for (var i = 0; i < active.length; i++)
-        worst = Math.min(worst, World.GROUND_Y - active[i].y)
-    return worst
-}
 
 // ----------------------------------------------------------------- drawing
 

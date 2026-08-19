@@ -2,7 +2,6 @@ import QtQuick
 import "World.js" as World
 import "Waves.js" as Waves
 import "Palette.js" as Palette
-import "Draw.js" as Draw
 import "Backdrop.js" as Backdrop
 import "Cities.js" as Cities
 import "Batteries.js" as Batteries
@@ -194,7 +193,12 @@ Item {
             return
 
         case "tally":
-            e.accepted = false
+            // The count-up takes about ten seconds and takes no other input,
+            // but Escape has to keep working: the README promises it closes the
+            // cabinet, and "except during the tally" is not a thing anyone
+            // should have to know.
+            if (e.key === Qt.Key_Escape) game.quitRequested()
+            else e.accepted = false
             return
 
         case "gameOver":
@@ -352,12 +356,18 @@ Item {
         return value > game.scores[game.scores.length - 1].score
     }
 
+    // The host owns the table, exactly as it owns the sound and tube settings:
+    // the game works out the new list and hands it over, and the host decides
+    // what to keep and binds it back. Assigning to `game.scores` here instead
+    // -- which this did at first -- overwrites the binding Panel.qml set up,
+    // after which nothing the host loads from disk can ever reach the game
+    // again. A host that does not echo the list back will not see it update,
+    // which is the intended contract and what dev/play.qml does.
     function recordScore(initials, value) {
         var list = game.scores.slice()
         list.push({ initials: initials.toUpperCase(), score: value })
         list.sort(function (a, b) { return b.score - a.score })
         while (list.length > game.maxScores) list.pop()
-        game.scores = list
         game.scoresUpdated(list)
     }
 
@@ -430,6 +440,13 @@ Item {
     // Off in the headless harness, which drives step() itself at a fixed dt so
     // a test is not at the mercy of the frame rate.
     property bool autoRun: true
+
+    // Closing the cabinet stops step(), and a looping SoundEffect does not care
+    // that nothing is stepping it -- so a bomber's hum went on droning from a
+    // window that was no longer on screen, until the shell was restarted.
+    // Anything held has to be released here, because this is the only signal
+    // the game gets that it has been put away.
+    onAutoRunChanged: if (!game.autoRun) sound.stopAll()
 
     FrameAnimation {
         running: game.visible && game.autoRun
@@ -561,19 +578,24 @@ Item {
 
         // ---- bombers and satellites
         var fEvents = Fliers.update(dt, game.worldView)
-        if (fEvents.spawned)
-            sound.startLoop("flier_hum")
         for (var d = 0; d < fEvents.destroyed.length; d++) {
             var dead = fEvents.destroyed[d]
             game.addScore(dead.points)
             game.detonate(dead.x, dead.y)
             Particles.debris(dead.x, dead.y, 14, 42, "missile")
-            sound.stopLoop("flier_hum")
         }
         for (var f = 0; f < fEvents.drops.length; f++)
             Missiles.spawnFromFlier(fEvents.drops[f].x, fEvents.drops[f].y,
                                     game.wave, game.allTargets())
-        if (Fliers.count() === 0 && fEvents.destroyed.length === 0)
+
+        // The hum follows the *state* -- something is up there or it is not --
+        // rather than the spawn and destroy events. Driving it off events meant
+        // every path that ended a flier's life had to remember to stop it, and
+        // the path that reopened the cabinet with one still on screen had
+        // nothing to restart it. Both calls are idempotent.
+        if (Fliers.count() > 0)
+            sound.startLoop("flier_hum")
+        else
             sound.stopLoop("flier_hum")
 
         // ---- is the wave over?

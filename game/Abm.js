@@ -26,8 +26,7 @@ function fire(startX, startY, targetX, targetY, speed) {
         speed: speed,
         dirX: dx / dist, dirY: dy / dist,
         totalDist: dist,
-        age: 0,
-        emberTimer: 0
+        age: 0
     }
     active.push(m)
     return m
@@ -41,7 +40,6 @@ function update(dt) {
     for (var i = active.length - 1; i >= 0; i--) {
         var m = active[i]
         m.age += dt
-        m.emberTimer += dt
 
         m.x += m.dirX * m.speed * dt
         m.y += m.dirY * m.speed * dt

@@ -90,23 +90,6 @@ function smoke(x, y, count, key) {
     }
 }
 
-// One exhaust ember, dropped behind a missile. Called every few frames rather
-// than every frame -- a continuous stream of these is what the gradient trail
-// is already doing, and doubling it just costs.
-function ember(x, y, key) {
-    push({
-        kind: "ember",
-        x: x, y: y,
-        vx: (Math.random() - 0.5) * 5,
-        vy: (Math.random() - 0.5) * 5 + 3,
-        life: 0.35 + Math.random() * 0.5,
-        age: 0,
-        size: 0.2 + Math.random() * 0.25,
-        drag: 0.90,
-        key: key || "missile"
-    })
-}
-
 function update(dt) {
     for (var i = list.length - 1; i >= 0; i--) {
         var p = list[i]
@@ -140,7 +123,6 @@ function update(dt) {
 }
 
 function count() { return list.length }
-function anyActive() { return list.length > 0 }
 function clear() { list = [] }
 
 function draw(ctx, pal, lw) {

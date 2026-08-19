@@ -34,17 +34,11 @@ function dist(x1, y1, x2, y2) {
     return Math.sqrt(dx * dx + dy * dy)
 }
 
-function randRange(lo, hi) {
-    return lo + Math.random() * (hi - lo)
-}
 
 function randInt(lo, hi) {
     return Math.floor(lo + Math.random() * (hi - lo + 1))
 }
 
-function pick(list) {
-    return list[Math.floor(Math.random() * list.length)]
-}
 
 // A deterministic generator, for anything that must look hand-placed but come
 // out the same every launch -- the starfield, the ridgeline, each city's
