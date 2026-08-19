@@ -17,7 +17,12 @@ BarWidget {
         id: button
         anchors.fill: parent
         bar: root.bar
-        text: "🚀"
+        // A Nerd Font glyph, not an emoji. An emoji renders through the
+        // colour font at its own weight and size and sits in the bar looking
+        // like it wandered in from somewhere else; a glyph takes the shell
+        // font, the theme's accent, and the same optical size as every other
+        // icon up there. nf-fa-crosshairs (U+F05B) -- the game's own reticle.
+        text: "\uf05b"
         tooltipText: "Quattro Command"
         foreground: Color.accent
         fixedWidth: root.bar && root.bar.vertical ? -1 : Style.space(27)

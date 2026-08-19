@@ -60,5 +60,5 @@ if ! pacman -Qq qt6-multimedia >/dev/null 2>&1; then
 fi
 
 say ""
-say "Done. Click the rocket in the bar, or bind a key to:"
+say "Done. Click the crosshair in the bar, or bind a key to:"
 say "  omarchy-shell shell toggle ${PLUGIN_ID}"

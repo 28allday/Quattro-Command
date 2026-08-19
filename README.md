@@ -20,7 +20,7 @@ rotates on its own every two waves, so wave nine does not look like wave one.
 omarchy plugin add https://github.com/28allday/Quattro-Command
 ```
 
-Then click the rocket in the bar, or bind a key to:
+Then click the crosshair in the bar, or bind a key to:
 
 ```
 omarchy-shell shell toggle nosignal.quattro-command
