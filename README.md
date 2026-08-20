@@ -111,8 +111,9 @@ wave 11.
 
 | | |
 | --- | --- |
-| ![Wave two](screenshots/02-wave-two.jpg) | ![Wave four](screenshots/03-wave-four.jpg) |
-| ![Wave five](screenshots/04-wave-five.jpg) | ![Bonus points](screenshots/05-bonus.jpg) |
+| ![Title screen](screenshots/00-title.jpg) | ![Wave two](screenshots/02-wave-two.jpg) |
+| ![Wave four](screenshots/03-wave-four.jpg) | ![Wave five](screenshots/04-wave-five.jpg) |
+| ![Bonus points](screenshots/05-bonus.jpg) | |
 
 ## Dependencies
 
